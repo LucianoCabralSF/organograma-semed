@@ -139,88 +139,124 @@
     .btn-secondary { background: rgba(13, 106, 100, 0.08); color: var(--primary-strong); }
 
     .overview-panel {
-      padding: 18px 16px 24px;
+      padding: 22px 16px 28px;
       margin-bottom: 18px;
       overflow-x: auto;
+      background: rgba(255, 255, 255, 0.86);
     }
 
     .overview-tree {
-      min-width: 840px;
-      padding: 6px 4px 10px;
+      min-width: 1220px;
+      padding: 10px 14px 24px;
     }
 
-    .overview-group {
+    .overview-stage {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 16px;
-      position: relative;
-    }
-
-    .overview-children {
-      display: none;
-      width: 100%;
-      justify-content: center;
       gap: 18px;
-      flex-wrap: wrap;
-      position: relative;
-      padding-top: 18px;
     }
 
-    .overview-children.open {
+    .overview-row {
+      width: 100%;
       display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 34px;
+      position: relative;
     }
 
-    .overview-children::before {
+    .overview-row.directors {
+      justify-content: space-between;
+      gap: 26px;
+      padding: 0 110px;
+    }
+
+    .overview-row.exec {
+      justify-content: center;
+      gap: 72px;
+      padding-left: 220px;
+    }
+
+    .overview-row.branch {
+      justify-content: flex-start;
+      padding-left: 24px;
+      gap: 0;
+    }
+
+    .overview-line-vertical {
+      width: 4px;
+      height: 34px;
+      background: #111;
+      border-radius: 999px;
+    }
+
+    .overview-line-horizontal {
+      width: calc(100% - 220px);
+      height: 4px;
+      background: #111;
+      border-radius: 999px;
+      position: relative;
+    }
+
+    .overview-line-horizontal.short {
+      width: 420px;
+    }
+
+    .overview-line-horizontal::before,
+    .overview-line-horizontal::after {
       content: "";
       position: absolute;
       top: 0;
+      width: 4px;
+      height: 30px;
+      background: #111;
+      border-radius: 999px;
+    }
+
+    .overview-line-horizontal::before {
+      left: 0;
+    }
+
+    .overview-line-horizontal::after {
+      right: 0;
+    }
+
+    .overview-line-horizontal.short::before {
       left: 50%;
-      width: 2px;
-      height: 18px;
       transform: translateX(-50%);
-      background: linear-gradient(to bottom, rgba(13, 106, 100, 0.45), rgba(13, 106, 100, 0.12));
+      height: 38px;
+      top: -34px;
     }
 
     .overview-card {
-      width: min(240px, 100%);
-      min-height: 102px;
-      padding: 16px 16px 14px;
+      width: 250px;
+      min-height: 92px;
+      padding: 14px 14px 12px;
       border-radius: 20px;
       background: white;
-      border: 1px solid rgba(216, 201, 177, 0.9);
-      box-shadow: 0 12px 28px rgba(29, 42, 51, 0.08);
-      text-align: center;
+      border: 1px solid rgba(80, 80, 80, 0.25);
+      box-shadow: 0 4px 14px rgba(29, 42, 51, 0.18);
+      text-align: left;
       position: relative;
       cursor: pointer;
-      transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+      transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease, background 160ms ease;
     }
 
     .overview-card:hover {
       transform: translateY(-2px);
-      box-shadow: 0 16px 34px rgba(29, 42, 51, 0.12);
+      box-shadow: 0 8px 18px rgba(29, 42, 51, 0.22);
       border-color: rgba(13, 106, 100, 0.28);
     }
 
     .overview-card.root {
-      width: 340px;
-      background: linear-gradient(135deg, rgba(13, 106, 100, 0.14), rgba(255, 255, 255, 0.96));
-    }
-
-    .overview-card.has-children::after {
-      content: "";
-      position: absolute;
-      left: 50%;
-      bottom: -18px;
-      width: 2px;
-      height: 18px;
-      transform: translateX(-50%);
-      background: linear-gradient(to bottom, rgba(13, 106, 100, 0.4), rgba(13, 106, 100, 0.12));
+      width: 290px;
     }
 
     .overview-card.open {
-      border-color: rgba(13, 106, 100, 0.4);
-      box-shadow: 0 16px 34px rgba(13, 106, 100, 0.12);
+      border-color: rgba(13, 106, 100, 0.45);
+      background: linear-gradient(180deg, rgba(13, 106, 100, 0.05), rgba(255,255,255,1));
+      box-shadow: 0 8px 18px rgba(13, 106, 100, 0.18);
     }
 
     .overview-label {
@@ -229,18 +265,18 @@
       text-transform: uppercase;
       letter-spacing: 0.08em;
       color: var(--accent);
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
 
     .overview-title {
-      font-size: 1rem;
+      font-size: 0.97rem;
       font-weight: 800;
       line-height: 1.3;
     }
 
     .overview-subtitle {
       margin-top: 6px;
-      font-size: 13px;
+      font-size: 12px;
       color: var(--muted);
       line-height: 1.4;
     }
@@ -251,6 +287,53 @@
       font-weight: 700;
       color: var(--primary-strong);
       letter-spacing: 0.04em;
+    }
+
+    .overview-branch {
+      display: none;
+      width: 100%;
+      margin-top: 8px;
+      padding-left: 110px;
+    }
+
+    .overview-branch.open {
+      display: block;
+    }
+
+    .overview-branch-column {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      align-items: flex-start;
+      position: relative;
+      padding-left: 58px;
+    }
+
+    .overview-branch-column::before {
+      content: "";
+      position: absolute;
+      left: 16px;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: #111;
+      border-radius: 999px;
+    }
+
+    .overview-branch-node {
+      position: relative;
+      padding-left: 36px;
+    }
+
+    .overview-branch-node::before {
+      content: "";
+      position: absolute;
+      left: 16px;
+      top: 46px;
+      width: 24px;
+      height: 4px;
+      background: #111;
+      border-radius: 999px;
     }
 
     .tree-panel { padding: 0 18px 22px; }
@@ -474,9 +557,13 @@
         height: 72px;
       }
 
-      .overview-tree {
-        min-width: 100%;
-      }
+      .overview-tree { min-width: 100%; }
+      .overview-row.exec,
+      .overview-row.directors,
+      .overview-branch { padding-left: 0; }
+      .overview-row.directors { justify-content: center; }
+      .overview-line-horizontal,
+      .overview-line-horizontal.short { width: 100%; max-width: 520px; }
 
       .hero, .toolbar, .detail-panel { padding: 20px; }
       .tree-panel { padding: 0 12px 16px; }
@@ -838,30 +925,93 @@
       return card;
     }
 
-    function renderOverviewNode(node, isRoot = false) {
-      const group = document.createElement("div");
-      group.className = "overview-group";
-      group.appendChild(createOverviewCard(node, isRoot ? "root" : ""));
-
-      const children = childrenMap.get(node.id) || [];
-      if (children.length) {
-        const childrenWrap = document.createElement("div");
-        childrenWrap.className = `overview-children ${state.openNodes.has(node.id) ? "open" : ""}`.trim();
-        children.forEach(child => {
-          childrenWrap.appendChild(renderOverviewNode(child, false));
-        });
-        group.appendChild(childrenWrap);
+    function renderBranchColumn(parentId) {
+      const children = childrenMap.get(parentId) || [];
+      if (!children.length) {
+        return null;
       }
 
-      return group;
+      const wrap = document.createElement("div");
+      wrap.className = `overview-branch ${state.openNodes.has(parentId) ? "open" : ""}`;
+
+      const column = document.createElement("div");
+      column.className = "overview-branch-column";
+
+      children.forEach(child => {
+        const item = document.createElement("div");
+        item.className = "overview-branch-node";
+        item.appendChild(createOverviewCard(child));
+
+        const nested = renderBranchColumn(child.id);
+        if (nested) {
+          item.appendChild(nested);
+        }
+
+        column.appendChild(item);
+      });
+
+      wrap.appendChild(column);
+      return wrap;
     }
 
     function renderOverview() {
       overviewTree.innerHTML = "";
       const roots = childrenMap.get("__root__") || [];
-      roots.forEach(root => {
-        overviewTree.appendChild(renderOverviewNode(root, true));
-      });
+      const root = roots[0];
+      if (!root) {
+        return;
+      }
+
+      const directChildren = childrenMap.get(root.id) || [];
+      const adjunto = directChildren.find(node => normalize(node.cargo).includes("adjunto"));
+      const gabinete = directChildren.find(node => normalize(node.cargo).includes("gabinete"));
+      const diretorias = directChildren.filter(node => node.id !== (adjunto && adjunto.id) && node.id !== (gabinete && gabinete.id));
+
+      const stage = document.createElement("div");
+      stage.className = "overview-stage";
+
+      const rowRoot = document.createElement("div");
+      rowRoot.className = "overview-row";
+      rowRoot.appendChild(createOverviewCard(root, "root"));
+      stage.appendChild(rowRoot);
+
+      const lineRoot = document.createElement("div");
+      lineRoot.className = "overview-line-vertical";
+      stage.appendChild(lineRoot);
+
+      if (adjunto || gabinete) {
+        const rowExec = document.createElement("div");
+        rowExec.className = "overview-row exec";
+        if (adjunto) {
+          rowExec.appendChild(createOverviewCard(adjunto));
+        }
+        if (gabinete) {
+          rowExec.appendChild(createOverviewCard(gabinete));
+        }
+        stage.appendChild(rowExec);
+      }
+
+      if (diretorias.length) {
+        const lineDirs = document.createElement("div");
+        lineDirs.className = "overview-line-horizontal";
+        stage.appendChild(lineDirs);
+
+        const rowDirectors = document.createElement("div");
+        rowDirectors.className = "overview-row directors";
+        diretorias.forEach(node => {
+          rowDirectors.appendChild(createOverviewCard(node));
+        });
+        stage.appendChild(rowDirectors);
+
+        diretorias.forEach(node => {
+          const branch = renderBranchColumn(node.id);
+          if (branch) {
+            stage.appendChild(branch);
+          }
+        });
+      }
+
+      overviewTree.appendChild(stage);
     }
 
     function showLoadError(message) {
