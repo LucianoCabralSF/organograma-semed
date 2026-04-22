@@ -6,21 +6,30 @@
   <title>Organograma interativo SEMED de Nova Olinda do Norte</title>
   <style>
     :root {
-      --bg: #f4efe6;
-      --ink: #1d2a33;
-      --muted: #5f6f79;
-      --line: #d8c9b1;
-      --primary: #0d6a64;
-      --primary-strong: #084f4b;
+      --bg: #f6efe3;
+      --paper: rgba(255, 252, 247, 0.96);
+      --card: #ffffff;
+      --ink: #1f2a33;
+      --muted: #697983;
+      --line: #d9c9ae;
+      --primary: #0f6f68;
+      --primary-soft: rgba(15, 111, 104, 0.08);
       --accent: #cc7a2f;
-      --card: rgba(255, 250, 243, 0.94);
-      --shadow: 0 16px 40px rgba(29, 42, 51, 0.12);
-      --radius: 20px;
-      --font-title: "Georgia", "Times New Roman", serif;
+      --connector: #141414;
+      --shadow: 0 10px 28px rgba(31, 42, 51, 0.14);
+      --shadow-soft: 0 4px 12px rgba(31, 42, 51, 0.12);
+      --radius: 26px;
+      --font-title: Georgia, "Times New Roman", serif;
       --font-body: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
 
     body {
       margin: 0;
@@ -28,66 +37,50 @@
       font-family: var(--font-body);
       color: var(--ink);
       background:
-        radial-gradient(circle at top left, rgba(204, 122, 47, 0.16), transparent 32%),
-        radial-gradient(circle at bottom right, rgba(13, 106, 100, 0.18), transparent 28%),
-        linear-gradient(160deg, #f2ede3 0%, #f9f6f0 50%, #f1eee7 100%);
+        radial-gradient(circle at 15% 20%, rgba(204, 122, 47, 0.18), transparent 26%),
+        radial-gradient(circle at 85% 18%, rgba(15, 111, 104, 0.16), transparent 24%),
+        linear-gradient(180deg, #f8f1e7 0%, #f6efe4 48%, #f3ebdf 100%);
     }
 
-    .shell {
-      width: min(1320px, calc(100% - 32px));
-      margin: 24px auto 40px;
+    .page {
+      width: min(1800px, calc(100% - 20px));
+      margin: 0 auto 34px;
+    }
+
+    .hero-band,
+    .toolbar-band,
+    .organogram-band {
+      width: 100%;
+      background: var(--paper);
+      backdrop-filter: blur(12px);
+    }
+
+    .hero-band {
       display: grid;
-      grid-template-columns: minmax(0, 1.6fr) minmax(320px, 0.9fr);
-      gap: 20px;
-      align-items: start;
-    }
-
-    .panel {
-      background: var(--card);
-      border: 1px solid rgba(216, 201, 177, 0.9);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(10px);
-    }
-
-    .hero {
-      padding: 22px 24px 24px;
-      margin-bottom: 18px;
-      position: relative;
-      overflow: hidden;
-      background:
-        linear-gradient(135deg, rgba(13, 106, 100, 0.1), rgba(255, 250, 243, 0.95) 42%, rgba(204, 122, 47, 0.08)),
-        var(--card);
-    }
-
-    .hero::after {
-      content: "";
-      position: absolute;
-      inset: auto -120px -140px auto;
-      width: 280px;
-      height: 280px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(13, 106, 100, 0.18), transparent 70%);
-    }
-
-    .brandbar {
-      display: grid;
-      grid-template-columns: auto 1fr auto;
-      gap: 18px;
+      grid-template-columns: 120px 1fr 120px;
+      gap: 24px;
       align-items: center;
-      position: relative;
-      z-index: 1;
+      padding: 24px 28px;
+      margin-top: 10px;
+      margin-bottom: 18px;
+      border: 1px solid rgba(217, 201, 174, 0.95);
+      border-radius: 34px;
+      box-shadow: var(--shadow);
+      background:
+        linear-gradient(135deg, rgba(15, 111, 104, 0.08), rgba(255, 252, 247, 0.97) 40%, rgba(204, 122, 47, 0.1)),
+        var(--paper);
     }
 
     .brand-mark {
-      width: 82px;
-      height: 82px;
+      width: 86px;
+      height: 86px;
       object-fit: contain;
-      border-radius: 20px;
-      background: rgba(255, 255, 255, 0.7);
-      border: 1px solid rgba(216, 201, 177, 0.9);
-      padding: 10px;
-      box-shadow: 0 10px 26px rgba(29, 42, 51, 0.08);
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(217, 201, 174, 0.95);
+      box-shadow: var(--shadow-soft);
+      justify-self: center;
+      padding: 8px;
     }
 
     .brand-mark.flag {
@@ -96,517 +89,477 @@
 
     h1 {
       margin: 0;
-      font-family: var(--font-title);
-      font-size: clamp(1.8rem, 4vw, 3rem);
-      line-height: 1.06;
       text-align: center;
+      font-family: var(--font-title);
+      font-size: clamp(2.2rem, 4.8vw, 4.15rem);
+      line-height: 0.98;
+      letter-spacing: -0.02em;
     }
 
-    .toolbar {
-      padding: 20px 22px 22px;
-      margin-bottom: 18px;
-    }
-
-    .toolbar-grid {
+    .toolbar-band {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) auto auto;
+      grid-template-columns: minmax(280px, 1fr) auto auto auto;
       gap: 12px;
       align-items: center;
+      padding: 16px 18px;
+      margin-bottom: 18px;
+      border: 1px solid rgba(217, 201, 174, 0.78);
+      border-radius: 24px;
+      box-shadow: 0 8px 20px rgba(31, 42, 51, 0.08);
     }
 
     .search {
       width: 100%;
       border: 1px solid var(--line);
-      border-radius: 14px;
+      border-radius: 16px;
       padding: 14px 16px;
       font-size: 15px;
       background: white;
       color: var(--ink);
+      outline: none;
+    }
+
+    .search:focus {
+      border-color: rgba(15, 111, 104, 0.45);
+      box-shadow: 0 0 0 4px rgba(15, 111, 104, 0.08);
     }
 
     .btn {
       border: 0;
-      border-radius: 14px;
+      border-radius: 16px;
       padding: 14px 16px;
       font-size: 14px;
-      font-weight: 700;
+      font-weight: 800;
       cursor: pointer;
-      transition: transform 160ms ease, background 160ms ease, color 160ms ease;
+      transition: transform 150ms ease, box-shadow 150ms ease, background 150ms ease;
+      box-shadow: var(--shadow-soft);
     }
 
-    .btn:hover { transform: translateY(-1px); }
-    .btn-primary { background: var(--primary); color: white; }
-    .btn-secondary { background: rgba(13, 106, 100, 0.08); color: var(--primary-strong); }
+    .btn:hover {
+      transform: translateY(-1px);
+    }
 
-    .overview-panel {
-      padding: 22px 16px 28px;
-      margin-bottom: 18px;
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-secondary {
+      background: rgba(15, 111, 104, 0.08);
+      color: var(--primary);
+    }
+
+    .count {
+      min-width: 120px;
+      text-align: right;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .organogram-band {
+      padding: 20px 0 56px;
       overflow-x: auto;
-      background: rgba(255, 255, 255, 0.86);
+      overflow-y: hidden;
+      background: transparent;
     }
 
-    .overview-tree {
-      min-width: 1220px;
-      padding: 10px 14px 24px;
-    }
-
-    .overview-stage {
+    .org-root {
+      min-width: 1420px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 18px;
+      gap: 22px;
+      padding: 18px 56px 34px;
+      background:
+        linear-gradient(180deg, rgba(255, 252, 247, 0.88), rgba(255, 252, 247, 0.78)),
+        radial-gradient(circle at top, rgba(15, 111, 104, 0.04), transparent 38%);
+      border-top: 1px solid rgba(217, 201, 174, 0.46);
+      border-bottom: 1px solid rgba(217, 201, 174, 0.46);
     }
 
-    .overview-row {
+    .org-row {
       width: 100%;
       display: flex;
-      align-items: flex-start;
       justify-content: center;
+      align-items: flex-start;
       gap: 34px;
       position: relative;
     }
 
-    .overview-row.directors {
+    .org-row.executive {
+      gap: 92px;
+      padding-left: 260px;
+    }
+
+    .org-row.directorias {
       justify-content: space-between;
-      gap: 26px;
-      padding: 0 110px;
+      gap: 28px;
+      padding: 0 108px;
     }
 
-    .overview-row.exec {
-      justify-content: center;
-      gap: 72px;
-      padding-left: 220px;
-    }
-
-    .overview-row.branch {
-      justify-content: flex-start;
-      padding-left: 24px;
-      gap: 0;
-    }
-
-    .overview-line-vertical {
+    .org-connector-v {
       width: 4px;
-      height: 34px;
-      background: #111;
+      height: 42px;
+      background: var(--connector);
       border-radius: 999px;
     }
 
-    .overview-line-horizontal {
-      width: calc(100% - 220px);
+    .org-connector-h {
+      width: calc(100% - 300px);
       height: 4px;
-      background: #111;
+      background: var(--connector);
       border-radius: 999px;
       position: relative;
     }
 
-    .overview-line-horizontal.short {
-      width: 420px;
-    }
-
-    .overview-line-horizontal::before,
-    .overview-line-horizontal::after {
+    .org-connector-h::before,
+    .org-connector-h::after {
       content: "";
       position: absolute;
       top: 0;
       width: 4px;
-      height: 30px;
-      background: #111;
+      height: 36px;
+      background: var(--connector);
       border-radius: 999px;
     }
 
-    .overview-line-horizontal::before {
+    .org-connector-h::before {
       left: 0;
     }
 
-    .overview-line-horizontal::after {
+    .org-connector-h::after {
       right: 0;
     }
 
-    .overview-line-horizontal.short::before {
-      left: 50%;
-      transform: translateX(-50%);
-      height: 38px;
-      top: -34px;
-    }
-
-    .overview-card {
-      width: 250px;
-      min-height: 92px;
+    .org-card {
+      width: 258px;
+      min-height: 108px;
+      background: var(--card);
+      border: 1px solid rgba(120, 106, 82, 0.28);
+      border-radius: 22px;
+      box-shadow: var(--shadow-soft);
       padding: 14px 14px 12px;
-      border-radius: 20px;
-      background: white;
-      border: 1px solid rgba(80, 80, 80, 0.25);
-      box-shadow: 0 4px 14px rgba(29, 42, 51, 0.18);
-      text-align: left;
       position: relative;
-      cursor: pointer;
-      transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease, background 160ms ease;
+      transition: transform 150ms ease, box-shadow 150ms ease, border-color 150ms ease;
     }
 
-    .overview-card:hover {
+    .org-card.root {
+      width: 310px;
+    }
+
+    .org-card.open {
+      border-color: rgba(15, 111, 104, 0.46);
+      box-shadow: 0 10px 22px rgba(15, 111, 104, 0.16);
+      background: linear-gradient(180deg, rgba(15, 111, 104, 0.03), white 36%);
+    }
+
+    .org-card:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 18px rgba(29, 42, 51, 0.22);
-      border-color: rgba(13, 106, 100, 0.28);
+      box-shadow: 0 10px 22px rgba(31, 42, 51, 0.18);
     }
 
-    .overview-card.root {
-      width: 290px;
+    .org-card-main {
+      cursor: pointer;
     }
 
-    .overview-card.open {
-      border-color: rgba(13, 106, 100, 0.45);
-      background: linear-gradient(180deg, rgba(13, 106, 100, 0.05), rgba(255,255,255,1));
-      box-shadow: 0 8px 18px rgba(13, 106, 100, 0.18);
-    }
-
-    .overview-label {
+    .org-level {
       font-size: 11px;
-      font-weight: 800;
+      font-weight: 900;
       text-transform: uppercase;
       letter-spacing: 0.08em;
       color: var(--accent);
       margin-bottom: 10px;
     }
 
-    .overview-title {
-      font-size: 0.97rem;
-      font-weight: 800;
-      line-height: 1.3;
+    .org-title {
+      font-size: 0.98rem;
+      line-height: 1.26;
+      font-weight: 900;
+      margin-bottom: 6px;
     }
 
-    .overview-subtitle {
-      margin-top: 6px;
-      font-size: 12px;
+    .org-subtitle,
+    .org-subordination {
       color: var(--muted);
-      line-height: 1.4;
-    }
-
-    .overview-hint {
-      margin-top: 10px;
       font-size: 12px;
-      font-weight: 700;
-      color: var(--primary-strong);
-      letter-spacing: 0.04em;
+      line-height: 1.35;
     }
 
-    .overview-branch {
+    .org-subordination {
+      margin-top: 6px;
+    }
+
+    .org-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .chip {
+      border: 1px solid rgba(15, 111, 104, 0.18);
+      background: var(--primary-soft);
+      color: var(--primary);
+      border-radius: 999px;
+      padding: 8px 10px;
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .chip.toggle {
+      background: transparent;
+      border-color: transparent;
+      color: var(--primary);
+      padding-left: 0;
+    }
+
+    .org-branch {
       display: none;
       width: 100%;
-      margin-top: 8px;
-      padding-left: 110px;
+      padding-left: 102px;
+      margin-top: 6px;
     }
 
-    .overview-branch.open {
+    .org-branch.open {
       display: block;
     }
 
-    .overview-branch-column {
+    .org-branch-column {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 18px;
       align-items: flex-start;
+      padding-left: 62px;
       position: relative;
-      padding-left: 58px;
     }
 
-    .overview-branch-column::before {
+    .org-branch-column::before {
       content: "";
       position: absolute;
       left: 16px;
       top: 0;
       bottom: 0;
       width: 4px;
-      background: #111;
+      background: var(--connector);
       border-radius: 999px;
     }
 
-    .overview-branch-node {
-      position: relative;
-      padding-left: 36px;
-    }
-
-    .overview-branch-node::before {
+    .org-branch-column::after {
       content: "";
       position: absolute;
       left: 16px;
-      top: 46px;
-      width: 24px;
-      height: 4px;
-      background: #111;
-      border-radius: 999px;
-    }
-
-    .tree-panel { padding: 0 18px 22px; }
-    .tree { display: flex; flex-direction: column; gap: 14px; }
-
-    .node-group {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      position: relative;
-      padding-left: 24px;
-    }
-
-    .node-group::before {
-      content: "";
-      position: absolute;
-      left: 8px;
       top: 0;
-      bottom: 0;
-      width: 1px;
-      background: linear-gradient(to bottom, rgba(13, 106, 100, 0.3), rgba(13, 106, 100, 0.06));
+      width: 34px;
+      height: 4px;
+      background: var(--connector);
+      border-radius: 999px;
     }
 
-    .node-group.root { padding-left: 0; }
-    .node-group.root::before { display: none; }
-
-    .node-card {
+    .org-branch-node {
       position: relative;
-      padding: 18px 18px 16px;
-      border: 1px solid rgba(216, 201, 177, 0.9);
-      border-radius: 18px;
-      background: white;
-      box-shadow: 0 10px 24px rgba(29, 42, 51, 0.08);
+      padding-left: 34px;
     }
 
-    .node-card::before {
+    .org-branch-node::before {
       content: "";
       position: absolute;
-      left: -16px;
-      top: 24px;
-      width: 16px;
-      height: 1px;
-      background: rgba(13, 106, 100, 0.28);
-    }
-
-    .root > .node-card::before { display: none; }
-
-    .node-top {
-      display: flex;
-      gap: 16px;
-      justify-content: space-between;
-      align-items: start;
-    }
-
-    .node-meta {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      min-width: 0;
-    }
-
-    .level-tag {
-      width: fit-content;
-      padding: 6px 10px;
+      left: 16px;
+      top: 50px;
+      width: 30px;
+      height: 4px;
+      background: var(--connector);
       border-radius: 999px;
-      background: rgba(204, 122, 47, 0.12);
-      color: #8a4b12;
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
     }
 
-    .node-title { font-size: 1.08rem; font-weight: 800; line-height: 1.3; }
-    .node-subtitle { color: var(--muted); font-size: 14px; line-height: 1.5; }
-
-    .occupant {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      margin-top: 14px;
-      padding-top: 14px;
-      border-top: 1px dashed rgba(216, 201, 177, 0.9);
-    }
-
-    .avatar {
-      width: 52px;
-      height: 52px;
-      border-radius: 16px;
-      object-fit: cover;
-      background: linear-gradient(135deg, rgba(13, 106, 100, 0.18), rgba(204, 122, 47, 0.18));
-      display: block;
-    }
-
-    .avatar.placeholder {
-      display: grid;
-      place-items: center;
-      color: var(--primary-strong);
-      font-weight: 800;
-      font-size: 1rem;
-    }
-
-    .node-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 16px;
-    }
-
-    .node-actions .action {
-      border: 1px solid rgba(13, 106, 100, 0.16);
-      background: rgba(13, 106, 100, 0.04);
-      color: var(--primary-strong);
-      border-radius: 12px;
-      padding: 10px 12px;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .node-actions .action.active {
-      background: var(--primary);
-      border-color: var(--primary);
-      color: white;
-    }
-
-    .children {
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(20, 20, 20, 0.42);
+      backdrop-filter: blur(4px);
       display: none;
-      margin-top: 8px;
-      gap: 14px;
-      flex-direction: column;
-    }
-
-    .children.open { display: flex; }
-
-    .detail-panel {
-      position: sticky;
-      top: 24px;
+      align-items: center;
+      justify-content: center;
       padding: 24px;
-      min-height: 420px;
+      z-index: 40;
     }
 
-    .detail-empty {
-      display: grid;
-      place-items: center;
-      min-height: 360px;
-      border: 1px dashed rgba(216, 201, 177, 0.95);
-      border-radius: 18px;
-      color: var(--muted);
-      text-align: center;
-      line-height: 1.6;
-      padding: 24px;
-      background: rgba(255, 255, 255, 0.72);
-    }
-
-    .detail-header {
+    .modal-backdrop.open {
       display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-bottom: 18px;
     }
 
-    .detail-type {
+    .modal {
+      width: min(760px, 100%);
+      max-height: min(82vh, 900px);
+      overflow: auto;
+      border-radius: 28px;
+      background: rgba(255, 252, 247, 0.98);
+      border: 1px solid rgba(217, 201, 174, 0.95);
+      box-shadow: 0 22px 46px rgba(20, 20, 20, 0.22);
+      padding: 26px 26px 22px;
+    }
+
+    .modal-top {
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .modal-type {
       font-size: 12px;
       text-transform: uppercase;
       letter-spacing: 0.08em;
       color: var(--accent);
-      font-weight: 800;
+      font-weight: 900;
+      margin-bottom: 8px;
     }
 
-    .detail-title {
-      font-family: var(--font-title);
-      font-size: 2rem;
-      line-height: 1.08;
+    .modal-title {
       margin: 0;
+      font-family: var(--font-title);
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      line-height: 1.05;
     }
 
-    .detail-subtitle { color: var(--muted); line-height: 1.6; }
+    .modal-subtitle {
+      margin-top: 10px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
 
-    .detail-block {
-      padding: 18px;
-      border-radius: 18px;
+    .modal-close {
+      border: 0;
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: rgba(15, 111, 104, 0.08);
+      color: var(--primary);
+      font-size: 20px;
+      font-weight: 900;
+      cursor: pointer;
+      flex: 0 0 auto;
+    }
+
+    .modal-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    .modal-block {
       background: white;
-      border: 1px solid rgba(216, 201, 177, 0.9);
-      margin-top: 12px;
+      border: 1px solid rgba(217, 201, 174, 0.95);
+      border-radius: 22px;
+      padding: 18px 18px 16px;
     }
 
-    .detail-block h3 { margin: 0 0 10px; font-size: 1rem; }
-    .detail-block p { margin: 0; line-height: 1.7; color: #31424c; }
+    .modal-block h3 {
+      margin: 0 0 10px;
+      font-size: 1rem;
+    }
 
-    .source {
-      margin-top: 18px;
-      padding-top: 16px;
-      border-top: 1px dashed rgba(216, 201, 177, 0.95);
+    .modal-block p {
+      margin: 0;
+      color: #334550;
+      line-height: 1.72;
+    }
+
+    .modal-source {
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px dashed rgba(217, 201, 174, 0.95);
       color: var(--muted);
       font-size: 13px;
       line-height: 1.6;
     }
 
-    .count { color: var(--muted); font-size: 14px; margin-top: 8px; }
-    .hidden { display: none !important; }
-
-    @media (max-width: 1080px) {
-      .shell { grid-template-columns: 1fr; }
-      .detail-panel { position: static; }
+    .hidden {
+      display: none !important;
     }
 
-    @media (max-width: 720px) {
-      .shell {
-        width: min(100% - 20px, 1320px);
-        margin-top: 10px;
+    @media (max-width: 1100px) {
+      .hero-band {
+        grid-template-columns: 96px 1fr 96px;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .page {
+        width: min(100% - 18px, 1800px);
+        margin-top: 8px;
       }
 
-      .brandbar {
+      .hero-band {
         grid-template-columns: 1fr;
         justify-items: center;
+        gap: 14px;
+      }
+
+      .toolbar-band {
+        grid-template-columns: 1fr;
+      }
+
+      .count {
+        text-align: left;
       }
 
       .brand-mark {
-        width: 72px;
-        height: 72px;
+        width: 74px;
+        height: 74px;
       }
 
-      .overview-tree { min-width: 100%; }
-      .overview-row.exec,
-      .overview-row.directors,
-      .overview-branch { padding-left: 0; }
-      .overview-row.directors { justify-content: center; }
-      .overview-line-horizontal,
-      .overview-line-horizontal.short { width: 100%; max-width: 520px; }
-
-      .hero, .toolbar, .detail-panel { padding: 20px; }
-      .tree-panel { padding: 0 12px 16px; }
-      .toolbar-grid { grid-template-columns: 1fr; }
-      .node-top { flex-direction: column; }
+      .org-root {
+        min-width: 1180px;
+        padding-inline: 28px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="shell">
-    <main>
-      <section class="panel hero">
-        <div class="brandbar">
-          <img class="brand-mark flag" src="Bandeira de NON.png" alt="Bandeira de Nova Olinda do Norte">
-          <h1>Organograma interativo SEMED de Nova Olinda do Norte</h1>
-          <img class="brand-mark" src="Logo SEMED NON.png" alt="Logotipo da SEMED">
+  <div class="page">
+    <header class="hero-band">
+      <img class="brand-mark flag" src="Bandeira de NON.png" alt="Bandeira de Nova Olinda do Norte" onerror="this.style.display='none'">
+      <h1>Organograma interativo SEMED de Nova Olinda do Norte</h1>
+      <img class="brand-mark" src="Logo SEMED NON.png" alt="Logotipo da SEMED" onerror="this.style.display='none'">
+    </header>
+
+    <section class="toolbar-band">
+      <input id="searchInput" class="search" type="search" placeholder="Pesquisar cargo, setor, diretoria, coordenação ou escola">
+      <button id="expandAllBtn" class="btn btn-primary" type="button">Expandir tudo</button>
+      <button id="collapseAllBtn" class="btn btn-secondary" type="button">Recolher</button>
+      <div id="resultCount" class="count"></div>
+    </section>
+
+    <section class="organogram-band">
+      <div id="organogramRoot" class="org-root"></div>
+    </section>
+  </div>
+
+  <div id="modalBackdrop" class="modal-backdrop">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-top">
+        <div>
+          <div id="modalType" class="modal-type"></div>
+          <h2 id="modalTitle" class="modal-title"></h2>
+          <div id="modalSubtitle" class="modal-subtitle"></div>
         </div>
-      </section>
-
-      <section class="panel overview-panel">
-        <div id="overviewTree" class="overview-tree"></div>
-      </section>
-
-      <section class="panel toolbar">
-        <div class="toolbar-grid">
-          <input id="searchInput" class="search" type="search" placeholder="Pesquisar cargo, setor, diretoria, coordenação ou escola">
-          <button id="expandAllBtn" class="btn btn-primary" type="button">Expandir tudo</button>
-          <button id="collapseAllBtn" class="btn btn-secondary" type="button">Recolher</button>
-        </div>
-        <div id="resultCount" class="count"></div>
-      </section>
-
-      <section class="panel tree-panel">
-        <div id="treeRoot" class="tree"></div>
-      </section>
-    </main>
-
-    <aside class="panel detail-panel">
-      <div id="detailEmpty" class="detail-empty">
-        Selecione um cargo
+        <button id="modalCloseBtn" class="modal-close" type="button" aria-label="Fechar">×</button>
       </div>
-      <div id="detailContent" class="hidden"></div>
-    </aside>
+      <div class="modal-grid">
+        <div id="modalAtribuicoes" class="modal-block hidden">
+          <h3>Atribuições</h3>
+          <p></p>
+        </div>
+        <div id="modalEntregas" class="modal-block hidden">
+          <h3>Entregas mínimas</h3>
+          <p></p>
+        </div>
+      </div>
+      <div id="modalSource" class="modal-source"></div>
+    </div>
   </div>
 
   <script>
@@ -620,18 +573,22 @@
 
     const state = {
       query: "",
-      openNodes: new Set(["n1"]),
-      currentDetail: null
+      openNodes: new Set(["n1"])
     };
 
-    const treeRoot = document.getElementById("treeRoot");
     const searchInput = document.getElementById("searchInput");
     const expandAllBtn = document.getElementById("expandAllBtn");
     const collapseAllBtn = document.getElementById("collapseAllBtn");
-    const detailEmpty = document.getElementById("detailEmpty");
-    const detailContent = document.getElementById("detailContent");
     const resultCount = document.getElementById("resultCount");
-    const overviewTree = document.getElementById("overviewTree");
+    const organogramRoot = document.getElementById("organogramRoot");
+    const modalBackdrop = document.getElementById("modalBackdrop");
+    const modalCloseBtn = document.getElementById("modalCloseBtn");
+    const modalType = document.getElementById("modalType");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalSubtitle = document.getElementById("modalSubtitle");
+    const modalAtribuicoes = document.getElementById("modalAtribuicoes");
+    const modalEntregas = document.getElementById("modalEntregas");
+    const modalSource = document.getElementById("modalSource");
 
     function normalize(value) {
       return (value || "")
@@ -665,18 +622,8 @@
         node.tipo,
         node.subordinado_a,
         node.atribuicoes,
-        node.entregas_minimas,
-        node.observacoes
+        node.entregas_minimas
       ].join(" ");
-    }
-
-    function getDescendants(id, bucket = []) {
-      const children = childrenMap.get(id) || [];
-      children.forEach(child => {
-        bucket.push(child.id);
-        getDescendants(child.id, bucket);
-      });
-      return bucket;
     }
 
     function hasMatchInBranch(node, query) {
@@ -696,64 +643,26 @@
       return (type || "").replaceAll("_", " ");
     }
 
-    function initials(text) {
-      return text
-        .split(" ")
-        .filter(Boolean)
-        .slice(0, 2)
-        .map(chunk => chunk[0])
-        .join("")
-        .toUpperCase();
+    function openModal(node, section) {
+      modalType.textContent = formatType(node.tipo);
+      modalTitle.textContent = node.cargo;
+      modalSubtitle.innerHTML = `<strong>Unidade:</strong> ${node.unidade || "-"}<br><strong>Subordinado a:</strong> ${node.subordinado_a || "Nível inicial do organograma"}`;
+
+      const showAtribuicoes = section === "atribuicoes" || section === "ambos";
+      const showEntregas = section === "entregas" || section === "ambos";
+
+      modalAtribuicoes.classList.toggle("hidden", !showAtribuicoes);
+      modalEntregas.classList.toggle("hidden", !showEntregas);
+
+      modalAtribuicoes.querySelector("p").textContent = node.atribuicoes || "Sem atribuições cadastradas.";
+      modalEntregas.querySelector("p").textContent = node.entregas_minimas || "Sem entregas mínimas cadastradas.";
+
+      modalSource.innerHTML = `<strong>Fonte:</strong> ${node.fonte_documento || "-"}<br><strong>Base normativa:</strong> ${node.fonte_artigos || "-"}`;
+      modalBackdrop.classList.add("open");
     }
 
-    function showDetail(node, section) {
-      state.currentDetail = { nodeId: node.id, section };
-      detailEmpty.classList.add("hidden");
-      detailContent.classList.remove("hidden");
-
-      const occupantMarkup = node.ocupante_nome
-        ? `
-          <div class="detail-block">
-            <h3>Ocupante</h3>
-            <p><strong>${node.ocupante_nome}</strong>${node.ocupante_foto_url ? ` • <a href="${node.ocupante_foto_url}" target="_blank" rel="noreferrer">abrir foto</a>` : ""}</p>
-          </div>
-        `
-        : "";
-
-      const blockTitle = section === "children" ? "Próximo nível" : section === "entregas" ? "Entregas mínimas" : "Atribuições";
-      const blockBody = section === "children"
-        ? ((childrenMap.get(node.id) || []).length
-            ? `Este cargo/função possui ${(childrenMap.get(node.id) || []).length} vínculo(s) diretamente subordinado(s). Use o botão "Ver próximo nível" no cartão para abrir a árvore logo ao lado.`
-            : "Este cargo/função não possui níveis subordinados cadastrados na base atual.")
-        : section === "entregas"
-          ? node.entregas_minimas
-          : node.atribuicoes;
-
-      detailContent.innerHTML = `
-        <div class="detail-header">
-          <div class="detail-type">${formatType(node.tipo)}</div>
-          <h2 class="detail-title">${node.cargo}</h2>
-          <div class="detail-subtitle">
-            <strong>Unidade:</strong> ${node.unidade}<br>
-            <strong>Subordinado a:</strong> ${node.subordinado_a || "Nível inicial do organograma"}
-          </div>
-        </div>
-        <div class="detail-block">
-          <h3>${blockTitle}</h3>
-          <p>${blockBody}</p>
-        </div>
-        <div class="detail-block">
-          <h3>Observações</h3>
-          <p>${node.observacoes || "Sem observações adicionais."}</p>
-        </div>
-        ${occupantMarkup}
-        <div class="source">
-          <strong>Fonte:</strong> ${node.fonte_documento}<br>
-          <strong>Base normativa:</strong> ${node.fonte_artigos}
-        </div>
-      `;
-
-      renderTree();
+    function closeModal() {
+      modalBackdrop.classList.remove("open");
     }
 
     function toggleNode(id) {
@@ -762,166 +671,68 @@
       } else {
         state.openNodes.add(id);
       }
-      showDetail(byId.get(id), "children");
+
+      renderOrganogram();
     }
 
-    function createActionButton(node, label, section, isActive) {
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = `action${isActive ? " active" : ""}`;
-      button.textContent = label;
-      button.addEventListener("click", () => {
-        if (section === "children") {
-          toggleNode(node.id);
-          return;
-        }
-        showDetail(node, section);
-      });
-      return button;
-    }
-
-    function renderNode(node, isRoot = false) {
-      const query = normalize(state.query);
-      if (!hasMatchInBranch(node, query)) {
-        return null;
-      }
-
-      const children = (childrenMap.get(node.id) || []).filter(child => hasMatchInBranch(child, query));
-      const group = document.createElement("div");
-      group.className = `node-group${isRoot ? " root" : ""}`;
-
-      const card = document.createElement("article");
-      card.className = "node-card";
-
-      const top = document.createElement("div");
-      top.className = "node-top";
-
-      const meta = document.createElement("div");
-      meta.className = "node-meta";
-      meta.innerHTML = `
-        <span class="level-tag">Nível ${node.nivel}</span>
-        <div class="node-title">${node.cargo}</div>
-        <div class="node-subtitle">${node.unidade}</div>
-        <div class="node-subtitle"><strong>Subordinação:</strong> ${node.subordinado_a || "Nível inicial do organograma"}</div>
-      `;
-
-      top.appendChild(meta);
-
-      if (node.ocupante_nome || node.ocupante_foto_url) {
-        const occupant = document.createElement("div");
-        occupant.className = "occupant";
-        const hasPhoto = Boolean(node.ocupante_foto_url);
-        occupant.innerHTML = `
-          ${hasPhoto
-            ? `<img class="avatar" src="${node.ocupante_foto_url}" alt="Foto de ${node.ocupante_nome || node.cargo}">`
-            : `<div class="avatar placeholder">${initials(node.ocupante_nome || node.cargo)}</div>`}
-          <div>
-            <div><strong>${node.ocupante_nome || "Ocupante não informado"}</strong></div>
-            <div class="node-subtitle">Campo opcional do cadastro</div>
-          </div>
-        `;
-        top.appendChild(occupant);
-      }
-
-      card.appendChild(top);
-
-      const actions = document.createElement("div");
-      actions.className = "node-actions";
-
-      const currentSection = state.currentDetail && state.currentDetail.nodeId === node.id
-        ? state.currentDetail.section
-        : null;
-
-      actions.appendChild(
-        createActionButton(
-          node,
-          children.length ? (state.openNodes.has(node.id) ? `Ocultar próximo nível (${children.length})` : `Ver próximo nível (${children.length})`) : "Sem próximo nível",
-          "children",
-          currentSection === "children"
-        )
-      );
-      actions.appendChild(createActionButton(node, "Atribuições", "atribuicoes", currentSection === "atribuicoes"));
-      actions.appendChild(createActionButton(node, "Entregas mínimas", "entregas", currentSection === "entregas"));
-
-      if (!children.length) {
-        actions.firstChild.disabled = true;
-        actions.firstChild.style.opacity = "0.55";
-        actions.firstChild.style.cursor = "not-allowed";
-      }
-
-      card.appendChild(actions);
-      group.appendChild(card);
-
-      const childWrapper = document.createElement("div");
-      childWrapper.className = `children${state.openNodes.has(node.id) ? " open" : ""}`;
-
-      children.forEach(child => {
-        const childNode = renderNode(child);
-        if (childNode) {
-          childWrapper.appendChild(childNode);
-        }
-      });
-
-      if (childWrapper.childElementCount) {
-        group.appendChild(childWrapper);
-      }
-
-      return group;
-    }
-
-    function renderTree() {
-      treeRoot.innerHTML = "";
-      const roots = childrenMap.get("__root__") || [];
-
-      roots.forEach(root => {
-        const rendered = renderNode(root, true);
-        if (rendered) {
-          treeRoot.appendChild(rendered);
-        }
-      });
-
-      const query = state.query.trim();
-      const total = data.filter(node => hasMatchInBranch(node, normalize(query)) && normalize(nodeText(node)).includes(normalize(query))).length;
-
-      resultCount.textContent = query
-        ? `${total} resultado(s)`
-        : `${data.length} cargos/funções`;
-    }
-
-    function toggleOverviewNode(id) {
-      if (state.openNodes.has(id)) {
-        state.openNodes.delete(id);
-      } else {
-        state.openNodes.add(id);
-      }
-
-      const node = byId.get(id);
-      if (node) {
-        showDetail(node, "children");
-      }
-      renderOverview();
-      renderTree();
-    }
-
-    function createOverviewCard(node, extraClass = "") {
+    function createCard(node, extraClass = "") {
       const hasChildren = (childrenMap.get(node.id) || []).length > 0;
       const card = document.createElement("div");
-      card.className = `overview-card ${extraClass} ${hasChildren ? "has-children" : ""} ${state.openNodes.has(node.id) ? "open" : ""}`.trim();
-      card.innerHTML = `
-        <div class="overview-label">Nível ${node.nivel}</div>
-        <div class="overview-title">${node.cargo}</div>
-        <div class="overview-subtitle">${node.unidade || ""}</div>
-        ${hasChildren ? `<div class="overview-hint">${state.openNodes.has(node.id) ? "Recolher" : "Abrir"}</div>` : ""}
+      card.className = `org-card ${extraClass} ${state.openNodes.has(node.id) ? "open" : ""}`.trim();
+
+      const main = document.createElement("div");
+      main.className = "org-card-main";
+      main.innerHTML = `
+        <div class="org-level">Nível ${node.nivel}</div>
+        <div class="org-title">${node.cargo}</div>
+        <div class="org-subtitle">${node.unidade || ""}</div>
+        <div class="org-subordination"><strong>Subordinação:</strong> ${node.subordinado_a || "Nível inicial do organograma"}</div>
       `;
-      card.addEventListener("click", () => {
+      main.addEventListener("click", () => {
         if (hasChildren) {
-          toggleOverviewNode(node.id);
+          toggleNode(node.id);
         } else {
-          showDetail(node, "atribuicoes");
-          renderOverview();
-          renderTree();
+          openModal(node, "ambos");
         }
       });
+
+      const actions = document.createElement("div");
+      actions.className = "org-actions";
+
+      if (hasChildren) {
+        const toggle = document.createElement("button");
+        toggle.type = "button";
+        toggle.className = "chip toggle";
+        toggle.textContent = state.openNodes.has(node.id) ? "Recolher" : "Abrir";
+        toggle.addEventListener("click", event => {
+          event.stopPropagation();
+          toggleNode(node.id);
+        });
+        actions.appendChild(toggle);
+      }
+
+      const attr = document.createElement("button");
+      attr.type = "button";
+      attr.className = "chip";
+      attr.textContent = "Atribuições";
+      attr.addEventListener("click", event => {
+        event.stopPropagation();
+        openModal(node, "atribuicoes");
+      });
+      actions.appendChild(attr);
+
+      const entregas = document.createElement("button");
+      entregas.type = "button";
+      entregas.className = "chip";
+      entregas.textContent = "Entregas";
+      entregas.addEventListener("click", event => {
+        event.stopPropagation();
+        openModal(node, "entregas");
+      });
+      actions.appendChild(entregas);
+
+      card.appendChild(main);
+      card.appendChild(actions);
       return card;
     }
 
@@ -932,15 +743,15 @@
       }
 
       const wrap = document.createElement("div");
-      wrap.className = `overview-branch ${state.openNodes.has(parentId) ? "open" : ""}`;
+      wrap.className = `org-branch ${state.openNodes.has(parentId) ? "open" : ""}`;
 
       const column = document.createElement("div");
-      column.className = "overview-branch-column";
+      column.className = "org-branch-column";
 
       children.forEach(child => {
         const item = document.createElement("div");
-        item.className = "overview-branch-node";
-        item.appendChild(createOverviewCard(child));
+        item.className = "org-branch-node";
+        item.appendChild(createCard(child));
 
         const nested = renderBranchColumn(child.id);
         if (nested) {
@@ -954,54 +765,55 @@
       return wrap;
     }
 
-    function renderOverview() {
-      overviewTree.innerHTML = "";
+    function renderOrganogram() {
+      organogramRoot.innerHTML = "";
+
       const roots = childrenMap.get("__root__") || [];
-      const root = roots[0];
+      const root = roots.find(node => hasMatchInBranch(node, normalize(state.query)));
+
       if (!root) {
+        resultCount.textContent = "0 cargos/funções";
         return;
       }
 
-      const directChildren = childrenMap.get(root.id) || [];
+      const directChildren = (childrenMap.get(root.id) || []).filter(node => hasMatchInBranch(node, normalize(state.query)));
       const adjunto = directChildren.find(node => normalize(node.cargo).includes("adjunto"));
       const gabinete = directChildren.find(node => normalize(node.cargo).includes("gabinete"));
       const diretorias = directChildren.filter(node => node.id !== (adjunto && adjunto.id) && node.id !== (gabinete && gabinete.id));
 
       const stage = document.createElement("div");
-      stage.className = "overview-stage";
+      stage.className = "org-root";
 
       const rowRoot = document.createElement("div");
-      rowRoot.className = "overview-row";
-      rowRoot.appendChild(createOverviewCard(root, "root"));
+      rowRoot.className = "org-row";
+      rowRoot.appendChild(createCard(root, "root"));
       stage.appendChild(rowRoot);
 
-      const lineRoot = document.createElement("div");
-      lineRoot.className = "overview-line-vertical";
-      stage.appendChild(lineRoot);
+      stage.appendChild(document.createElement("div")).className = "org-connector-v";
 
       if (adjunto || gabinete) {
         const rowExec = document.createElement("div");
-        rowExec.className = "overview-row exec";
+        rowExec.className = "org-row executive";
         if (adjunto) {
-          rowExec.appendChild(createOverviewCard(adjunto));
+          rowExec.appendChild(createCard(adjunto));
         }
         if (gabinete) {
-          rowExec.appendChild(createOverviewCard(gabinete));
+          rowExec.appendChild(createCard(gabinete));
         }
         stage.appendChild(rowExec);
       }
 
       if (diretorias.length) {
-        const lineDirs = document.createElement("div");
-        lineDirs.className = "overview-line-horizontal";
-        stage.appendChild(lineDirs);
+        const line = document.createElement("div");
+        line.className = "org-connector-h";
+        stage.appendChild(line);
 
-        const rowDirectors = document.createElement("div");
-        rowDirectors.className = "overview-row directors";
+        const rowDirs = document.createElement("div");
+        rowDirs.className = "org-row diretorias";
         diretorias.forEach(node => {
-          rowDirectors.appendChild(createOverviewCard(node));
+          rowDirs.appendChild(createCard(node));
         });
-        stage.appendChild(rowDirectors);
+        stage.appendChild(rowDirs);
 
         diretorias.forEach(node => {
           const branch = renderBranchColumn(node.id);
@@ -1011,25 +823,11 @@
         });
       }
 
-      overviewTree.appendChild(stage);
-    }
+      organogramRoot.appendChild(stage);
 
-    function showLoadError(message) {
-      detailEmpty.classList.add("hidden");
-      detailContent.classList.remove("hidden");
-      detailContent.innerHTML = `
-        <div class="detail-header">
-          <div class="detail-type">erro de carga</div>
-          <h2 class="detail-title">Não foi possível carregar os dados</h2>
-          <div class="detail-subtitle">
-            Verifique a URL do App Web, a permissão pública e o formato do retorno.
-          </div>
-        </div>
-        <div class="detail-block">
-          <h3>Detalhe técnico</h3>
-          <p>${message}</p>
-        </div>
-      `;
+      const query = state.query.trim();
+      const total = data.filter(node => hasMatchInBranch(node, normalize(query)) && normalize(nodeText(node)).includes(normalize(query))).length;
+      resultCount.textContent = query ? `${total} resultado(s)` : `${data.length} cargos/funções`;
     }
 
     async function resolveDataSource() {
@@ -1059,15 +857,10 @@
     }
 
     async function bootstrap() {
-      try {
-        const incoming = await resolveDataSource();
-        incoming.forEach(item => data.push(item));
-        rebuildIndexes();
-        renderOverview();
-        renderTree();
-      } catch (error) {
-        showLoadError(error.message);
-      }
+      const incoming = await resolveDataSource();
+      incoming.forEach(item => data.push(item));
+      rebuildIndexes();
+      renderOrganogram();
     }
 
     searchInput.addEventListener("input", event => {
@@ -1076,24 +869,38 @@
         data.forEach(node => {
           if (hasMatchInBranch(node, normalize(state.query))) {
             state.openNodes.add(node.id);
-            getDescendants(node.id).forEach(descendantId => state.openNodes.add(descendantId));
           }
         });
       }
-      renderTree();
+      renderOrganogram();
     });
 
     expandAllBtn.addEventListener("click", () => {
       data.forEach(node => state.openNodes.add(node.id));
-      renderTree();
+      renderOrganogram();
     });
 
     collapseAllBtn.addEventListener("click", () => {
       state.openNodes = new Set(["n1"]);
-      renderTree();
+      renderOrganogram();
     });
 
-    bootstrap();
+    modalCloseBtn.addEventListener("click", closeModal);
+    modalBackdrop.addEventListener("click", event => {
+      if (event.target === modalBackdrop) {
+        closeModal();
+      }
+    });
+
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape") {
+        closeModal();
+      }
+    });
+
+    bootstrap().catch(error => {
+      console.error(error);
+    });
   </script>
 </body>
 </html>
