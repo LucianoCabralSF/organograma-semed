@@ -263,7 +263,7 @@
 
     .org-card {
       width: 258px;
-      min-height: 108px;
+      min-height: 148px;
       background: var(--card);
       border: 1px solid rgba(120, 106, 82, 0.28);
       border-radius: 22px;
@@ -324,6 +324,53 @@
       gap: 8px;
       flex-wrap: wrap;
       margin-top: 12px;
+    }
+
+    .org-occupant {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px dashed rgba(217, 201, 174, 0.95);
+      min-height: 54px;
+    }
+
+    .org-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      object-fit: cover;
+      flex: 0 0 auto;
+      background: linear-gradient(135deg, rgba(15, 111, 104, 0.16), rgba(204, 122, 47, 0.18));
+      border: 1px solid rgba(15, 111, 104, 0.14);
+    }
+
+    .org-avatar.placeholder {
+      display: grid;
+      place-items: center;
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .org-occupant-text {
+      min-width: 0;
+    }
+
+    .org-occupant-name {
+      font-size: 12px;
+      line-height: 1.25;
+      font-weight: 800;
+      color: var(--ink);
+      word-break: break-word;
+    }
+
+    .org-occupant-role {
+      margin-top: 2px;
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.3;
     }
 
     .chip {
@@ -388,6 +435,10 @@
     .org-branch-node {
       position: relative;
       padding-left: 34px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 14px;
     }
 
     .org-branch-node::before {
@@ -397,6 +448,17 @@
       top: 50px;
       width: 18px;
       height: 4px;
+      background: var(--connector);
+      border-radius: 999px;
+    }
+
+    .org-branch-node.with-nested::after {
+      content: "";
+      position: absolute;
+      left: 16px;
+      top: 50px;
+      bottom: 0;
+      width: 4px;
       background: var(--connector);
       border-radius: 999px;
     }
@@ -581,6 +643,10 @@
         <button id="modalCloseBtn" class="modal-close" type="button" aria-label="Fechar">×</button>
       </div>
       <div class="modal-grid">
+        <div id="modalOcupante" class="modal-block hidden">
+          <h3>Ocupante</h3>
+          <p></p>
+        </div>
         <div id="modalAtribuicoes" class="modal-block hidden">
           <h3>Atribuições</h3>
           <p></p>
@@ -618,6 +684,7 @@
     const modalType = document.getElementById("modalType");
     const modalTitle = document.getElementById("modalTitle");
     const modalSubtitle = document.getElementById("modalSubtitle");
+    const modalOcupante = document.getElementById("modalOcupante");
     const modalAtribuicoes = document.getElementById("modalAtribuicoes");
     const modalEntregas = document.getElementById("modalEntregas");
     const modalSource = document.getElementById("modalSource");
@@ -675,6 +742,31 @@
       return (type || "").replaceAll("_", " ");
     }
 
+    function initials(text) {
+      return (text || "")
+        .split(" ")
+        .filter(Boolean)
+        .slice(0, 2)
+        .map(chunk => chunk[0])
+        .join("")
+        .toUpperCase() || "SE";
+    }
+
+    function normalizeImageUrl(url) {
+      const value = (url || "").trim();
+      if (!value) {
+        return "";
+      }
+
+      if (value.includes("github.com") && value.includes("/blob/")) {
+        return value
+          .replace("https://github.com/", "https://raw.githubusercontent.com/")
+          .replace("/blob/", "/");
+      }
+
+      return value;
+    }
+
     function openModal(node, section) {
       modalType.textContent = formatType(node.tipo);
       modalTitle.textContent = node.cargo;
@@ -682,9 +774,15 @@
 
       const showAtribuicoes = section === "atribuicoes" || section === "ambos";
       const showEntregas = section === "entregas" || section === "ambos";
+      const ocupante = node.ocupante_nome || "";
 
       modalAtribuicoes.classList.toggle("hidden", !showAtribuicoes);
       modalEntregas.classList.toggle("hidden", !showEntregas);
+      modalOcupante.classList.toggle("hidden", !ocupante);
+
+      if (ocupante) {
+        modalOcupante.querySelector("p").textContent = ocupante;
+      }
 
       modalAtribuicoes.querySelector("p").textContent = node.atribuicoes || "Sem atribuições cadastradas.";
       modalEntregas.querySelector("p").textContent = node.entregas_minimas || "Sem entregas mínimas cadastradas.";
@@ -714,11 +812,22 @@
 
       const main = document.createElement("div");
       main.className = "org-card-main";
+      const imageUrl = normalizeImageUrl(node.ocupante_foto_url);
+      const occupantName = node.ocupante_nome || "";
       main.innerHTML = `
         <div class="org-level">Nível ${node.nivel}</div>
         <div class="org-title">${node.cargo}</div>
         <div class="org-subtitle">${node.unidade || ""}</div>
         <div class="org-subordination"><strong>Subordinação:</strong> ${node.subordinado_a || "Nível inicial do organograma"}</div>
+        <div class="org-occupant">
+          ${imageUrl
+            ? `<img class="org-avatar" src="${imageUrl}" alt="Foto de ${occupantName || node.cargo}" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'org-avatar placeholder',textContent:'${initials(occupantName || node.cargo)}'}))">`
+            : `<div class="org-avatar placeholder">${initials(occupantName || node.cargo)}</div>`}
+          <div class="org-occupant-text">
+            <div class="org-occupant-name">${occupantName || "Cargo sem ocupante vinculado"}</div>
+            <div class="org-occupant-role">${occupantName ? "Ocupante do cargo" : "Espaço para nome e foto"}</div>
+          </div>
+        </div>
       `;
       main.addEventListener("click", () => {
         if (hasChildren) {
@@ -787,6 +896,7 @@
 
         const nested = renderBranchColumn(child.id);
         if (nested) {
+          item.classList.add("with-nested");
           item.appendChild(nested);
         }
 
