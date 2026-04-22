@@ -196,6 +196,7 @@
       justify-content: space-between;
       gap: 28px;
       padding: 0 108px;
+      align-items: stretch;
     }
 
     .org-connector-v {
@@ -230,6 +231,34 @@
 
     .org-connector-h::after {
       right: 0;
+    }
+
+    .org-director-grid {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(var(--director-count, 4), minmax(258px, 1fr));
+      gap: 28px;
+      padding: 0 108px;
+      align-items: start;
+    }
+
+    .org-director-slot {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .org-director-slot::before {
+      content: "";
+      position: absolute;
+      top: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 40px;
+      background: var(--connector);
+      border-radius: 999px;
     }
 
     .org-card {
@@ -318,8 +347,7 @@
     .org-branch {
       display: none;
       width: 100%;
-      padding-left: 102px;
-      margin-top: 6px;
+      margin-top: 16px;
     }
 
     .org-branch.open {
@@ -331,7 +359,7 @@
       flex-direction: column;
       gap: 18px;
       align-items: flex-start;
-      padding-left: 62px;
+      padding-left: 44px;
       position: relative;
     }
 
@@ -351,7 +379,7 @@
       position: absolute;
       left: 16px;
       top: 0;
-      width: 34px;
+      width: 18px;
       height: 4px;
       background: var(--connector);
       border-radius: 999px;
@@ -367,7 +395,7 @@
       position: absolute;
       left: 16px;
       top: 50px;
-      width: 30px;
+      width: 18px;
       height: 4px;
       background: var(--connector);
       border-radius: 999px;
@@ -514,6 +542,10 @@
       .org-root {
         min-width: 1180px;
         padding-inline: 28px;
+      }
+
+      .org-director-grid {
+        padding: 0 28px;
       }
     }
   </style>
@@ -808,19 +840,24 @@
         line.className = "org-connector-h";
         stage.appendChild(line);
 
-        const rowDirs = document.createElement("div");
-        rowDirs.className = "org-row diretorias";
-        diretorias.forEach(node => {
-          rowDirs.appendChild(createCard(node));
-        });
-        stage.appendChild(rowDirs);
+        const directorGrid = document.createElement("div");
+        directorGrid.className = "org-director-grid";
+        directorGrid.style.setProperty("--director-count", String(diretorias.length));
 
         diretorias.forEach(node => {
+          const slot = document.createElement("div");
+          slot.className = "org-director-slot";
+          slot.appendChild(createCard(node));
+
           const branch = renderBranchColumn(node.id);
           if (branch) {
-            stage.appendChild(branch);
+            slot.appendChild(branch);
           }
+
+          directorGrid.appendChild(slot);
         });
+
+        stage.appendChild(directorGrid);
       }
 
       organogramRoot.appendChild(stage);
