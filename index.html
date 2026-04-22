@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Organograma SEMED - Nova Olinda do Norte</title>
+  <style>
+    :root {
+      --bg: #f4efe6;
+      --ink: #1d2a33;
+      --muted: #5f6f79;
+      --line: #d8c9b1;
+      --primary: #0d6a64;
+      --primary-strong: #084f4b;
+      --accent: #cc7a2f;
+      --card: rgba(255, 250, 243, 0.94);
+      --shadow: 0 16px 40px rgba(29, 42, 51, 0.12);
+      --radius: 20px;
+      --font-title: "Georgia", "Times New Roman", serif;
+      --font-body: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: var(--font-body);
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(204, 122, 47, 0.16), transparent 32%),
+        radial-gradient(circle at bottom right, rgba(13, 106, 100, 0.18), transparent 28%),
+        linear-gradient(160deg, #f2ede3 0%, #f9f6f0 50%, #f1eee7 100%);
+    }
+
+    .shell {
+      width: min(1320px, calc(100% - 32px));
+      margin: 24px auto 40px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(320px, 0.9fr);
+      gap: 20px;
+      align-items: start;
+    }
+
+    .panel {
+      background: var(--card);
+      border: 1px solid rgba(216, 201, 177, 0.9);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .hero {
+      padding: 28px;
+      margin-bottom: 18px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -120px -140px auto;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(13, 106, 100, 0.18), transparent 70%);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(13, 106, 100, 0.1);
+      color: var(--primary-strong);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    h1 {
+      margin: 16px 0 8px;
+      font-family: var(--font-title);
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      line-height: 1.02;
+    }
+
+    .hero p {
+      max-width: 72ch;
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 1rem;
+    }
+
+    .toolbar {
+      padding: 20px 22px 22px;
+      margin-bottom: 18px;
+    }
+
+    .toolbar-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto auto;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .search {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px 16px;
+      font-size: 15px;
+      background: white;
+      color: var(--ink);
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 14px;
+      padding: 14px 16px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 160ms ease, background 160ms ease, color 160ms ease;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-secondary { background: rgba(13, 106, 100, 0.08); color: var(--primary-strong); }
+
+    .tree-panel { padding: 0 18px 22px; }
+    .tree { display: flex; flex-direction: column; gap: 14px; }
+
+    .node-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      position: relative;
+      padding-left: 24px;
+    }
+
+    .node-group::before {
+      content: "";
+      position: absolute;
+      left: 8px;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, rgba(13, 106, 100, 0.3), rgba(13, 106, 100, 0.06));
+    }
+
+    .node-group.root { padding-left: 0; }
+    .node-group.root::before { display: none; }
+
+    .node-card {
+      position: relative;
+      padding: 18px 18px 16px;
+      border: 1px solid rgba(216, 201, 177, 0.9);
+      border-radius: 18px;
+      background: white;
+      box-shadow: 0 10px 24px rgba(29, 42, 51, 0.08);
+    }
+
+    .node-card::before {
+      content: "";
+      position: absolute;
+      left: -16px;
+      top: 24px;
+      width: 16px;
+      height: 1px;
+      background: rgba(13, 106, 100, 0.28);
+    }
+
+    .root > .node-card::before { display: none; }
+
+    .node-top {
+      display: flex;
+      gap: 16px;
+      justify-content: space-between;
+      align-items: start;
+    }
+
+    .node-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    .level-tag {
+      width: fit-content;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(204, 122, 47, 0.12);
+      color: #8a4b12;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .node-title { font-size: 1.08rem; font-weight: 800; line-height: 1.3; }
+    .node-subtitle { color: var(--muted); font-size: 14px; line-height: 1.5; }
+
+    .occupant {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px dashed rgba(216, 201, 177, 0.9);
+    }
+
+    .avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      object-fit: cover;
+      background: linear-gradient(135deg, rgba(13, 106, 100, 0.18), rgba(204, 122, 47, 0.18));
+      display: block;
+    }
+
+    .avatar.placeholder {
+      display: grid;
+      place-items: center;
+      color: var(--primary-strong);
+      font-weight: 800;
+      font-size: 1rem;
+    }
+
+    .node-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .node-actions .action {
+      border: 1px solid rgba(13, 106, 100, 0.16);
+      background: rgba(13, 106, 100, 0.04);
+      color: var(--primary-strong);
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .node-actions .action.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: white;
+    }
+
+    .children {
+      display: none;
+      margin-top: 8px;
+      gap: 14px;
+      flex-direction: column;
+    }
+
+    .children.open { display: flex; }
+
+    .detail-panel {
+      position: sticky;
+      top: 24px;
+      padding: 24px;
+      min-height: 420px;
+    }
+
+    .detail-empty {
+      display: grid;
+      place-items: center;
+      min-height: 360px;
+      border: 1px dashed rgba(216, 201, 177, 0.95);
+      border-radius: 18px;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.6;
+      padding: 24px;
+      background: rgba(255, 255, 255, 0.72);
+    }
+
+    .detail-header {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .detail-type {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      font-weight: 800;
+    }
+
+    .detail-title {
+      font-family: var(--font-title);
+      font-size: 2rem;
+      line-height: 1.08;
+      margin: 0;
+    }
+
+    .detail-subtitle { color: var(--muted); line-height: 1.6; }
+
+    .detail-block {
+      padding: 18px;
+      border-radius: 18px;
+      background: white;
+      border: 1px solid rgba(216, 201, 177, 0.9);
+      margin-top: 12px;
+    }
+
+    .detail-block h3 { margin: 0 0 10px; font-size: 1rem; }
+    .detail-block p { margin: 0; line-height: 1.7; color: #31424c; }
+
+    .source {
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1px dashed rgba(216, 201, 177, 0.95);
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .count { color: var(--muted); font-size: 14px; margin-top: 8px; }
+    .hidden { display: none !important; }
+
+    @media (max-width: 1080px) {
+      .shell { grid-template-columns: 1fr; }
+      .detail-panel { position: static; }
+    }
+
+    @media (max-width: 720px) {
+      .shell {
+        width: min(100% - 20px, 1320px);
+        margin-top: 10px;
+      }
+
+      .hero, .toolbar, .detail-panel { padding: 20px; }
+      .tree-panel { padding: 0 12px 16px; }
+      .toolbar-grid { grid-template-columns: 1fr; }
+      .node-top { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <main>
+      <section class="panel hero">
+        <div class="eyebrow">SEMED • Nova Olinda do Norte</div>
+        <h1>Organograma interativo com drilldown por cargo, função e entregas</h1>
+        <p>
+          Esta versão pode carregar dados locais para teste ou consumir a planilha publicada como
+          App Web no Google Apps Script, ideal para hospedar no GitHub e abrir pela Vercel.
+        </p>
+      </section>
+
+      <section class="panel toolbar">
+        <div class="toolbar-grid">
+          <input id="searchInput" class="search" type="search" placeholder="Pesquisar cargo, setor, diretoria, coordenação ou escola">
+          <button id="expandAllBtn" class="btn btn-primary" type="button">Expandir tudo</button>
+          <button id="collapseAllBtn" class="btn btn-secondary" type="button">Recolher</button>
+        </div>
+        <div id="resultCount" class="count"></div>
+      </section>
+
+      <section class="panel tree-panel">
+        <div id="treeRoot" class="tree"></div>
+      </section>
+    </main>
+
+    <aside class="panel detail-panel">
+      <div id="detailEmpty" class="detail-empty">
+        Selecione uma ação em qualquer cartão do organograma.
+        <br>
+        Você pode abrir o próximo nível ou focar só em atribuições e entregas mínimas.
+      </div>
+      <div id="detailContent" class="hidden"></div>
+    </aside>
+  </div>
+
+  <script src="dados/estrutura_organizacional_semed_nova_olinda.js"></script>
+  <script>
+    const data = [];
+    const byId = new Map();
+    const childrenMap = new Map();
+
+    const state = {
+      query: "",
+      openNodes: new Set(["n1"]),
+      currentDetail: null
+    };
+
+    const treeRoot = document.getElementById("treeRoot");
+    const searchInput = document.getElementById("searchInput");
+    const expandAllBtn = document.getElementById("expandAllBtn");
+    const collapseAllBtn = document.getElementById("collapseAllBtn");
+    const detailEmpty = document.getElementById("detailEmpty");
+    const detailContent = document.getElementById("detailContent");
+    const resultCount = document.getElementById("resultCount");
+
+    function normalize(value) {
+      return (value || "")
+        .toString()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase();
+    }
+
+    function rebuildIndexes() {
+      byId.clear();
+      childrenMap.clear();
+
+      data.forEach(item => {
+        byId.set(item.id, item);
+      });
+
+      data.forEach(item => {
+        const key = item.parent_id || "__root__";
+        if (!childrenMap.has(key)) {
+          childrenMap.set(key, []);
+        }
+        childrenMap.get(key).push(item);
+      });
+    }
+
+    function nodeText(node) {
+      return [
+        node.cargo,
+        node.unidade,
+        node.tipo,
+        node.subordinado_a,
+        node.atribuicoes,
+        node.entregas_minimas,
+        node.observacoes
+      ].join(" ");
+    }
+
+    function getDescendants(id, bucket = []) {
+      const children = childrenMap.get(id) || [];
+      children.forEach(child => {
+        bucket.push(child.id);
+        getDescendants(child.id, bucket);
+      });
+      return bucket;
+    }
+
+    function hasMatchInBranch(node, query) {
+      if (!query) {
+        return true;
+      }
+
+      if (normalize(nodeText(node)).includes(query)) {
+        return true;
+      }
+
+      const children = childrenMap.get(node.id) || [];
+      return children.some(child => hasMatchInBranch(child, query));
+    }
+
+    function formatType(type) {
+      return (type || "").replaceAll("_", " ");
+    }
+
+    function initials(text) {
+      return text
+        .split(" ")
+        .filter(Boolean)
+        .slice(0, 2)
+        .map(chunk => chunk[0])
+        .join("")
+        .toUpperCase();
+    }
+
+    function showDetail(node, section) {
+      state.currentDetail = { nodeId: node.id, section };
+      detailEmpty.classList.add("hidden");
+      detailContent.classList.remove("hidden");
+
+      const occupantMarkup = node.ocupante_nome
+        ? `
+          <div class="detail-block">
+            <h3>Ocupante</h3>
+            <p><strong>${node.ocupante_nome}</strong>${node.ocupante_foto_url ? ` • <a href="${node.ocupante_foto_url}" target="_blank" rel="noreferrer">abrir foto</a>` : ""}</p>
+          </div>
+        `
+        : "";
+
+      const blockTitle = section === "children" ? "Próximo nível" : section === "entregas" ? "Entregas mínimas" : "Atribuições";
+      const blockBody = section === "children"
+        ? ((childrenMap.get(node.id) || []).length
+            ? `Este cargo/função possui ${(childrenMap.get(node.id) || []).length} vínculo(s) diretamente subordinado(s). Use o botão "Ver próximo nível" no cartão para abrir a árvore logo ao lado.`
+            : "Este cargo/função não possui níveis subordinados cadastrados na base atual.")
+        : section === "entregas"
+          ? node.entregas_minimas
+          : node.atribuicoes;
+
+      detailContent.innerHTML = `
+        <div class="detail-header">
+          <div class="detail-type">${formatType(node.tipo)}</div>
+          <h2 class="detail-title">${node.cargo}</h2>
+          <div class="detail-subtitle">
+            <strong>Unidade:</strong> ${node.unidade}<br>
+            <strong>Subordinado a:</strong> ${node.subordinado_a || "Nível inicial do organograma"}
+          </div>
+        </div>
+        <div class="detail-block">
+          <h3>${blockTitle}</h3>
+          <p>${blockBody}</p>
+        </div>
+        <div class="detail-block">
+          <h3>Observações</h3>
+          <p>${node.observacoes || "Sem observações adicionais."}</p>
+        </div>
+        ${occupantMarkup}
+        <div class="source">
+          <strong>Fonte:</strong> ${node.fonte_documento}<br>
+          <strong>Base normativa:</strong> ${node.fonte_artigos}
+        </div>
+      `;
+
+      renderTree();
+    }
+
+    function toggleNode(id) {
+      if (state.openNodes.has(id)) {
+        state.openNodes.delete(id);
+      } else {
+        state.openNodes.add(id);
+      }
+      showDetail(byId.get(id), "children");
+    }
+
+    function createActionButton(node, label, section, isActive) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = `action${isActive ? " active" : ""}`;
+      button.textContent = label;
+      button.addEventListener("click", () => {
+        if (section === "children") {
+          toggleNode(node.id);
+          return;
+        }
+        showDetail(node, section);
+      });
+      return button;
+    }
+
+    function renderNode(node, isRoot = false) {
+      const query = normalize(state.query);
+      if (!hasMatchInBranch(node, query)) {
+        return null;
+      }
+
+      const children = (childrenMap.get(node.id) || []).filter(child => hasMatchInBranch(child, query));
+      const group = document.createElement("div");
+      group.className = `node-group${isRoot ? " root" : ""}`;
+
+      const card = document.createElement("article");
+      card.className = "node-card";
+
+      const top = document.createElement("div");
+      top.className = "node-top";
+
+      const meta = document.createElement("div");
+      meta.className = "node-meta";
+      meta.innerHTML = `
+        <span class="level-tag">Nível ${node.nivel}</span>
+        <div class="node-title">${node.cargo}</div>
+        <div class="node-subtitle">${node.unidade}</div>
+        <div class="node-subtitle"><strong>Subordinação:</strong> ${node.subordinado_a || "Nível inicial do organograma"}</div>
+      `;
+
+      top.appendChild(meta);
+
+      if (node.ocupante_nome || node.ocupante_foto_url) {
+        const occupant = document.createElement("div");
+        occupant.className = "occupant";
+        const hasPhoto = Boolean(node.ocupante_foto_url);
+        occupant.innerHTML = `
+          ${hasPhoto
+            ? `<img class="avatar" src="${node.ocupante_foto_url}" alt="Foto de ${node.ocupante_nome || node.cargo}">`
+            : `<div class="avatar placeholder">${initials(node.ocupante_nome || node.cargo)}</div>`}
+          <div>
+            <div><strong>${node.ocupante_nome || "Ocupante não informado"}</strong></div>
+            <div class="node-subtitle">Campo opcional do cadastro</div>
+          </div>
+        `;
+        top.appendChild(occupant);
+      }
+
+      card.appendChild(top);
+
+      const actions = document.createElement("div");
+      actions.className = "node-actions";
+
+      const currentSection = state.currentDetail && state.currentDetail.nodeId === node.id
+        ? state.currentDetail.section
+        : null;
+
+      actions.appendChild(
+        createActionButton(
+          node,
+          children.length ? (state.openNodes.has(node.id) ? `Ocultar próximo nível (${children.length})` : `Ver próximo nível (${children.length})`) : "Sem próximo nível",
+          "children",
+          currentSection === "children"
+        )
+      );
+      actions.appendChild(createActionButton(node, "Atribuições", "atribuicoes", currentSection === "atribuicoes"));
+      actions.appendChild(createActionButton(node, "Entregas mínimas", "entregas", currentSection === "entregas"));
+
+      if (!children.length) {
+        actions.firstChild.disabled = true;
+        actions.firstChild.style.opacity = "0.55";
+        actions.firstChild.style.cursor = "not-allowed";
+      }
+
+      card.appendChild(actions);
+      group.appendChild(card);
+
+      const childWrapper = document.createElement("div");
+      childWrapper.className = `children${state.openNodes.has(node.id) ? " open" : ""}`;
+
+      children.forEach(child => {
+        const childNode = renderNode(child);
+        if (childNode) {
+          childWrapper.appendChild(childNode);
+        }
+      });
+
+      if (childWrapper.childElementCount) {
+        group.appendChild(childWrapper);
+      }
+
+      return group;
+    }
+
+    function renderTree() {
+      treeRoot.innerHTML = "";
+      const roots = childrenMap.get("__root__") || [];
+
+      roots.forEach(root => {
+        const rendered = renderNode(root, true);
+        if (rendered) {
+          treeRoot.appendChild(rendered);
+        }
+      });
+
+      const query = state.query.trim();
+      const total = data.filter(node => hasMatchInBranch(node, normalize(query)) && normalize(nodeText(node)).includes(normalize(query))).length;
+
+      resultCount.textContent = query
+        ? `${total} resultado(s) com correspondência direta para "${query}". Ramos relacionados continuam visíveis para contexto.`
+        : `${data.length} cargos/funções cadastrados na base atual.`;
+    }
+
+    function showLoadError(message) {
+      detailEmpty.classList.add("hidden");
+      detailContent.classList.remove("hidden");
+      detailContent.innerHTML = `
+        <div class="detail-header">
+          <div class="detail-type">erro de carga</div>
+          <h2 class="detail-title">Não foi possível carregar os dados</h2>
+          <div class="detail-subtitle">
+            Verifique a URL do App Web, a permissão pública e o formato do retorno.
+          </div>
+        </div>
+        <div class="detail-block">
+          <h3>Detalhe técnico</h3>
+          <p>${message}</p>
+        </div>
+      `;
+    }
+
+    async function resolveDataSource() {
+      const params = new URLSearchParams(window.location.search);
+      const remoteUrl = params.get("data") || window.ORG_REMOTE_URL || "";
+
+      if (!remoteUrl) {
+        return Array.isArray(window.ORG_DATA) ? window.ORG_DATA : [];
+      }
+
+      const response = await fetch(remoteUrl);
+      if (!response.ok) {
+        throw new Error(`Falha HTTP ${response.status} ao consultar o App Web.`);
+      }
+
+      const payload = await response.json();
+
+      if (Array.isArray(payload)) {
+        return payload;
+      }
+
+      if (Array.isArray(payload.items)) {
+        return payload.items;
+      }
+
+      throw new Error("O App Web respondeu, mas o JSON não contém um array em items.");
+    }
+
+    async function bootstrap() {
+      try {
+        const incoming = await resolveDataSource();
+        incoming.forEach(item => data.push(item));
+        rebuildIndexes();
+        renderTree();
+      } catch (error) {
+        showLoadError(error.message);
+      }
+    }
+
+    searchInput.addEventListener("input", event => {
+      state.query = event.target.value;
+      if (state.query.trim()) {
+        data.forEach(node => {
+          if (hasMatchInBranch(node, normalize(state.query))) {
+            state.openNodes.add(node.id);
+            getDescendants(node.id).forEach(descendantId => state.openNodes.add(descendantId));
+          }
+        });
+      }
+      renderTree();
+    });
+
+    expandAllBtn.addEventListener("click", () => {
+      data.forEach(node => state.openNodes.add(node.id));
+      renderTree();
+    });
+
+    collapseAllBtn.addEventListener("click", () => {
+      state.openNodes = new Set(["n1"]);
+      renderTree();
+    });
+
+    bootstrap();
+  </script>
+</body>
+</html>
