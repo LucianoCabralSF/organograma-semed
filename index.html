@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Organograma SEMED - Nova Olinda do Norte</title>
+  <title>Organograma interativo SEMED de Nova Olinda do Norte</title>
   <style>
     :root {
       --bg: #f4efe6;
@@ -51,10 +51,13 @@
     }
 
     .hero {
-      padding: 28px;
+      padding: 22px 24px 24px;
       margin-bottom: 18px;
       position: relative;
       overflow: hidden;
+      background:
+        linear-gradient(135deg, rgba(13, 106, 100, 0.1), rgba(255, 250, 243, 0.95) 42%, rgba(204, 122, 47, 0.08)),
+        var(--card);
     }
 
     .hero::after {
@@ -67,33 +70,36 @@
       background: radial-gradient(circle, rgba(13, 106, 100, 0.18), transparent 70%);
     }
 
-    .eyebrow {
-      display: inline-flex;
-      gap: 8px;
+    .brandbar {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 18px;
       align-items: center;
-      padding: 8px 14px;
-      border-radius: 999px;
-      background: rgba(13, 106, 100, 0.1);
-      color: var(--primary-strong);
-      font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
+      position: relative;
+      z-index: 1;
+    }
+
+    .brand-mark {
+      width: 82px;
+      height: 82px;
+      object-fit: contain;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid rgba(216, 201, 177, 0.9);
+      padding: 10px;
+      box-shadow: 0 10px 26px rgba(29, 42, 51, 0.08);
+    }
+
+    .brand-mark.flag {
+      padding: 6px;
     }
 
     h1 {
-      margin: 16px 0 8px;
-      font-family: var(--font-title);
-      font-size: clamp(2rem, 5vw, 3.4rem);
-      line-height: 1.02;
-    }
-
-    .hero p {
-      max-width: 72ch;
       margin: 0;
-      color: var(--muted);
-      line-height: 1.6;
-      font-size: 1rem;
+      font-family: var(--font-title);
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      line-height: 1.06;
+      text-align: center;
     }
 
     .toolbar {
@@ -131,6 +137,90 @@
     .btn:hover { transform: translateY(-1px); }
     .btn-primary { background: var(--primary); color: white; }
     .btn-secondary { background: rgba(13, 106, 100, 0.08); color: var(--primary-strong); }
+
+    .overview-panel {
+      padding: 22px 20px 26px;
+      margin-bottom: 18px;
+      overflow-x: auto;
+    }
+
+    .overview-tree {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      align-items: center;
+      min-width: 780px;
+    }
+
+    .overview-level {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      position: relative;
+      flex-wrap: wrap;
+    }
+
+    .overview-level.has-parent::before {
+      content: "";
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      width: 2px;
+      height: 20px;
+      transform: translateX(-50%);
+      background: linear-gradient(to bottom, rgba(13, 106, 100, 0.45), rgba(13, 106, 100, 0.12));
+    }
+
+    .overview-card {
+      width: min(230px, 100%);
+      min-height: 96px;
+      padding: 16px 16px 14px;
+      border-radius: 20px;
+      background: white;
+      border: 1px solid rgba(216, 201, 177, 0.9);
+      box-shadow: 0 12px 28px rgba(29, 42, 51, 0.08);
+      text-align: center;
+      position: relative;
+    }
+
+    .overview-card.root {
+      width: 320px;
+      background: linear-gradient(135deg, rgba(13, 106, 100, 0.14), rgba(255, 255, 255, 0.96));
+    }
+
+    .overview-card.parent::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: -20px;
+      width: 2px;
+      height: 20px;
+      transform: translateX(-50%);
+      background: linear-gradient(to bottom, rgba(13, 106, 100, 0.4), rgba(13, 106, 100, 0.12));
+    }
+
+    .overview-label {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .overview-title {
+      font-size: 1rem;
+      font-weight: 800;
+      line-height: 1.3;
+    }
+
+    .overview-subtitle {
+      margin-top: 6px;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
 
     .tree-panel { padding: 0 18px 22px; }
     .tree { display: flex; flex-direction: column; gap: 14px; }
@@ -343,6 +433,16 @@
         margin-top: 10px;
       }
 
+      .brandbar {
+        grid-template-columns: 1fr;
+        justify-items: center;
+      }
+
+      .brand-mark {
+        width: 72px;
+        height: 72px;
+      }
+
       .hero, .toolbar, .detail-panel { padding: 20px; }
       .tree-panel { padding: 0 12px 16px; }
       .toolbar-grid { grid-template-columns: 1fr; }
@@ -354,12 +454,15 @@
   <div class="shell">
     <main>
       <section class="panel hero">
-        <div class="eyebrow">SEMED • Nova Olinda do Norte</div>
-        <h1>Organograma interativo com drilldown por cargo, função e entregas</h1>
-        <p>
-          Esta versão pode carregar dados locais para teste ou consumir a planilha publicada como
-          App Web no Google Apps Script, ideal para hospedar no GitHub e abrir pela Vercel.
-        </p>
+        <div class="brandbar">
+          <img class="brand-mark flag" src="Bandeira de NON.png" alt="Bandeira de Nova Olinda do Norte">
+          <h1>Organograma interativo SEMED de Nova Olinda do Norte</h1>
+          <img class="brand-mark" src="Logo SEMED NON.png" alt="Logotipo da SEMED">
+        </div>
+      </section>
+
+      <section class="panel overview-panel">
+        <div id="overviewTree" class="overview-tree"></div>
       </section>
 
       <section class="panel toolbar">
@@ -378,9 +481,7 @@
 
     <aside class="panel detail-panel">
       <div id="detailEmpty" class="detail-empty">
-        Selecione uma ação em qualquer cartão do organograma.
-        <br>
-        Você pode abrir o próximo nível ou focar só em atribuições e entregas mínimas.
+        Selecione um cargo
       </div>
       <div id="detailContent" class="hidden"></div>
     </aside>
@@ -408,6 +509,7 @@
     const detailEmpty = document.getElementById("detailEmpty");
     const detailContent = document.getElementById("detailContent");
     const resultCount = document.getElementById("resultCount");
+    const overviewTree = document.getElementById("overviewTree");
 
     function normalize(value) {
       return (value || "")
@@ -660,8 +762,66 @@
       const total = data.filter(node => hasMatchInBranch(node, normalize(query)) && normalize(nodeText(node)).includes(normalize(query))).length;
 
       resultCount.textContent = query
-        ? `${total} resultado(s) com correspondência direta para "${query}". Ramos relacionados continuam visíveis para contexto.`
-        : `${data.length} cargos/funções cadastrados na base atual.`;
+        ? `${total} resultado(s)`
+        : `${data.length} cargos/funções`;
+    }
+
+    function createOverviewCard(node, extraClass = "") {
+      const card = document.createElement("div");
+      card.className = `overview-card ${extraClass}`.trim();
+      card.innerHTML = `
+        <div class="overview-label">Nível ${node.nivel}</div>
+        <div class="overview-title">${node.cargo}</div>
+        <div class="overview-subtitle">${node.unidade || ""}</div>
+      `;
+      return card;
+    }
+
+    function renderOverview() {
+      overviewTree.innerHTML = "";
+      const roots = childrenMap.get("__root__") || [];
+      const root = roots[0];
+
+      if (!root) {
+        return;
+      }
+
+      const level1 = document.createElement("div");
+      level1.className = "overview-level";
+      level1.appendChild(createOverviewCard(root, "root parent"));
+      overviewTree.appendChild(level1);
+
+      const firstChildren = childrenMap.get(root.id) || [];
+      if (!firstChildren.length) {
+        return;
+      }
+
+      const level2 = document.createElement("div");
+      level2.className = "overview-level has-parent";
+      firstChildren.forEach(node => {
+        const hasChildren = (childrenMap.get(node.id) || []).length > 0;
+        level2.appendChild(createOverviewCard(node, hasChildren ? "parent" : ""));
+      });
+      overviewTree.appendChild(level2);
+
+      const secondLevelNodes = [];
+      firstChildren.forEach(parent => {
+        const kids = childrenMap.get(parent.id) || [];
+        kids.slice(0, 3).forEach(child => {
+          secondLevelNodes.push(child);
+        });
+      });
+
+      if (!secondLevelNodes.length) {
+        return;
+      }
+
+      const level3 = document.createElement("div");
+      level3.className = "overview-level has-parent";
+      secondLevelNodes.forEach(node => {
+        level3.appendChild(createOverviewCard(node));
+      });
+      overviewTree.appendChild(level3);
     }
 
     function showLoadError(message) {
@@ -713,6 +873,7 @@
         const incoming = await resolveDataSource();
         incoming.forEach(item => data.push(item));
         rebuildIndexes();
+        renderOverview();
         renderTree();
       } catch (error) {
         showLoadError(error.message);
