@@ -139,42 +139,52 @@
     .btn-secondary { background: rgba(13, 106, 100, 0.08); color: var(--primary-strong); }
 
     .overview-panel {
-      padding: 22px 20px 26px;
+      padding: 18px 16px 24px;
       margin-bottom: 18px;
       overflow-x: auto;
     }
 
     .overview-tree {
+      min-width: 840px;
+      padding: 6px 4px 10px;
+    }
+
+    .overview-group {
       display: flex;
       flex-direction: column;
-      gap: 28px;
       align-items: center;
-      min-width: 780px;
+      gap: 16px;
+      position: relative;
     }
 
-    .overview-level {
+    .overview-children {
+      display: none;
       width: 100%;
-      display: flex;
       justify-content: center;
       gap: 18px;
-      position: relative;
       flex-wrap: wrap;
+      position: relative;
+      padding-top: 18px;
     }
 
-    .overview-level.has-parent::before {
+    .overview-children.open {
+      display: flex;
+    }
+
+    .overview-children::before {
       content: "";
       position: absolute;
-      top: -20px;
+      top: 0;
       left: 50%;
       width: 2px;
-      height: 20px;
+      height: 18px;
       transform: translateX(-50%);
       background: linear-gradient(to bottom, rgba(13, 106, 100, 0.45), rgba(13, 106, 100, 0.12));
     }
 
     .overview-card {
-      width: min(230px, 100%);
-      min-height: 96px;
+      width: min(240px, 100%);
+      min-height: 102px;
       padding: 16px 16px 14px;
       border-radius: 20px;
       background: white;
@@ -182,22 +192,35 @@
       box-shadow: 0 12px 28px rgba(29, 42, 51, 0.08);
       text-align: center;
       position: relative;
+      cursor: pointer;
+      transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+    }
+
+    .overview-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 34px rgba(29, 42, 51, 0.12);
+      border-color: rgba(13, 106, 100, 0.28);
     }
 
     .overview-card.root {
-      width: 320px;
+      width: 340px;
       background: linear-gradient(135deg, rgba(13, 106, 100, 0.14), rgba(255, 255, 255, 0.96));
     }
 
-    .overview-card.parent::after {
+    .overview-card.has-children::after {
       content: "";
       position: absolute;
       left: 50%;
-      bottom: -20px;
+      bottom: -18px;
       width: 2px;
-      height: 20px;
+      height: 18px;
       transform: translateX(-50%);
       background: linear-gradient(to bottom, rgba(13, 106, 100, 0.4), rgba(13, 106, 100, 0.12));
+    }
+
+    .overview-card.open {
+      border-color: rgba(13, 106, 100, 0.4);
+      box-shadow: 0 16px 34px rgba(13, 106, 100, 0.12);
     }
 
     .overview-label {
@@ -220,6 +243,14 @@
       font-size: 13px;
       color: var(--muted);
       line-height: 1.4;
+    }
+
+    .overview-hint {
+      margin-top: 10px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--primary-strong);
+      letter-spacing: 0.04em;
     }
 
     .tree-panel { padding: 0 18px 22px; }
@@ -441,6 +472,10 @@
       .brand-mark {
         width: 72px;
         height: 72px;
+      }
+
+      .overview-tree {
+        min-width: 100%;
       }
 
       .hero, .toolbar, .detail-panel { padding: 20px; }
@@ -766,62 +801,67 @@
         : `${data.length} cargos/funções`;
     }
 
+    function toggleOverviewNode(id) {
+      if (state.openNodes.has(id)) {
+        state.openNodes.delete(id);
+      } else {
+        state.openNodes.add(id);
+      }
+
+      const node = byId.get(id);
+      if (node) {
+        showDetail(node, "children");
+      }
+      renderOverview();
+      renderTree();
+    }
+
     function createOverviewCard(node, extraClass = "") {
+      const hasChildren = (childrenMap.get(node.id) || []).length > 0;
       const card = document.createElement("div");
-      card.className = `overview-card ${extraClass}`.trim();
+      card.className = `overview-card ${extraClass} ${hasChildren ? "has-children" : ""} ${state.openNodes.has(node.id) ? "open" : ""}`.trim();
       card.innerHTML = `
         <div class="overview-label">Nível ${node.nivel}</div>
         <div class="overview-title">${node.cargo}</div>
         <div class="overview-subtitle">${node.unidade || ""}</div>
+        ${hasChildren ? `<div class="overview-hint">${state.openNodes.has(node.id) ? "Recolher" : "Abrir"}</div>` : ""}
       `;
+      card.addEventListener("click", () => {
+        if (hasChildren) {
+          toggleOverviewNode(node.id);
+        } else {
+          showDetail(node, "atribuicoes");
+          renderOverview();
+          renderTree();
+        }
+      });
       return card;
+    }
+
+    function renderOverviewNode(node, isRoot = false) {
+      const group = document.createElement("div");
+      group.className = "overview-group";
+      group.appendChild(createOverviewCard(node, isRoot ? "root" : ""));
+
+      const children = childrenMap.get(node.id) || [];
+      if (children.length) {
+        const childrenWrap = document.createElement("div");
+        childrenWrap.className = `overview-children ${state.openNodes.has(node.id) ? "open" : ""}`.trim();
+        children.forEach(child => {
+          childrenWrap.appendChild(renderOverviewNode(child, false));
+        });
+        group.appendChild(childrenWrap);
+      }
+
+      return group;
     }
 
     function renderOverview() {
       overviewTree.innerHTML = "";
       const roots = childrenMap.get("__root__") || [];
-      const root = roots[0];
-
-      if (!root) {
-        return;
-      }
-
-      const level1 = document.createElement("div");
-      level1.className = "overview-level";
-      level1.appendChild(createOverviewCard(root, "root parent"));
-      overviewTree.appendChild(level1);
-
-      const firstChildren = childrenMap.get(root.id) || [];
-      if (!firstChildren.length) {
-        return;
-      }
-
-      const level2 = document.createElement("div");
-      level2.className = "overview-level has-parent";
-      firstChildren.forEach(node => {
-        const hasChildren = (childrenMap.get(node.id) || []).length > 0;
-        level2.appendChild(createOverviewCard(node, hasChildren ? "parent" : ""));
+      roots.forEach(root => {
+        overviewTree.appendChild(renderOverviewNode(root, true));
       });
-      overviewTree.appendChild(level2);
-
-      const secondLevelNodes = [];
-      firstChildren.forEach(parent => {
-        const kids = childrenMap.get(parent.id) || [];
-        kids.slice(0, 3).forEach(child => {
-          secondLevelNodes.push(child);
-        });
-      });
-
-      if (!secondLevelNodes.length) {
-        return;
-      }
-
-      const level3 = document.createElement("div");
-      level3.className = "overview-level has-parent";
-      secondLevelNodes.forEach(node => {
-        level3.appendChild(createOverviewCard(node));
-      });
-      overviewTree.appendChild(level3);
     }
 
     function showLoadError(message) {
